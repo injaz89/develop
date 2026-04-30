@@ -31,3 +31,27 @@ export const deleteTodo = async (id) => {
   }
   return response.json();
 };
+
+export const updateTodo = async (id, todoData) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(todoData),
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
+
+export const toggleTodo = async (id) => {
+  const response = await fetch(`${API_URL}/${id}/done`, {
+    method: 'PATCH',
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
