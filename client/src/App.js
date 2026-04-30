@@ -1,7 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import TodoList from './components/TodoList';
+import { fetchTodos } from './services/api';
 import './App.css';
 
 function App() {
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadTodos = async () => {
+      try {
+        const data = await fetchTodos();
+        setTodos(data);
+      } catch (error) {
+        console.error('Failed to fetch todos:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadTodos();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -19,10 +38,11 @@ function App() {
           </form>
         </section>
         <section className="todo-list-section">
-          <ul className="todo-list">
-            {/* Empty list for now */}
-            <p className="empty-message">No TODOs yet. Add one above!</p>
-          </ul>
+          {loading ? (
+            <p className="loading-message">Loading TODOs...</p>
+          ) : (
+            <TodoList todos={todos} />
+          )}
         </section>
       </main>
     </div>

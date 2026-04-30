@@ -54,3 +54,40 @@
   text-align: center;
   color: #7f8c8d;
 }
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.todo-item {
+  background: white;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.2s ease;
+}
+
+.todo-item.done .todo-title {
+  text-decoration: line-through;
+  color: #95a5a6;
+}
+
+.todo-title {
+  font-weight: bold;
+  display: block;
+}
+
+.todo-desc {
+  margin: 5px 0 0 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+.loading-message {
+  text-align: center;
+  color: #3498db;
+  font-weight: bold;
+}
