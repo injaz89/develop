@@ -5,6 +5,8 @@ require('dotenv').config();
 
 const app = express();
 
+const todoRoutes = require('./routes/todoRoutes');
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -18,6 +20,9 @@ mongoose.connect(process.env.MONGO_URI)
 app.get('/', (req, res) => {
   res.send('Backend Server is Running!');
 });
+
+// Mount Todo routes
+app.use('/api/todos', todoRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
