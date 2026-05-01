@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# Frontend - TODO App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend for the TODO application, built with React.js.
 
-## Available Scripts
+## 🛠️ Features
 
-In the project directory, you can run:
+- **Clean UI**: Minimalist design focused on task management.
+- **Full CRUD**: Create, read, update, and delete tasks.
+- **Status Toggle**: Easily mark tasks as completed.
+- **Optimistic Updates**: Immediate UI updates for a snappy experience.
+- **Error Handling**: Displays user-friendly error messages if the API fails.
+- **Loading States**: Feedback while waiting for server responses.
 
-### `npm start`
+## 🚀 Setup & Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. **Configuration**:
+   The application is configured to talk to the backend at `http://localhost:5000`. If your backend is running on a different port, update the `API_URL` in `src/services/api.js`.
 
-### `npm test`
+3. **Run the Application**:
+   ```bash
+   npm start
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🏗️ Architecture
 
-### `npm run build`
+- `src/App.js`: Main container component managing state and API calls.
+- `src/components/`: Reusable UI components (`TodoList`, `TodoItem`).
+- `src/services/api.js`: API service layer using Fetch API.
+- `src/App.css`: Styles for the application.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ✨ Bonus Points Implemented
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Optimistic UI Updates**: Deleting and toggling tasks updates the UI instantly, with a rollback mechanism if the API call fails.
+- **UX Touches**: Transitions and hover effects for a premium feel.
+- **Form Validation**: Simple checks to ensure task titles are not empty.
+- **Clean Design**: A polished, responsive interface.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## ⚠️ Assumptions & Limitations
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **Browser Support**: Targeted at modern browsers supporting ES6 and CSS Grid/Flexbox.
+- **Offline Mode**: Does not support offline caching or service workers.

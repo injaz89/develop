@@ -8,6 +8,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const [newTodoDescription, setNewTodoDescription] = useState('');
+  const [isInvalid, setIsInvalid] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -17,7 +18,7 @@ function App() {
         setTodos(data);
       } catch (error) {
         console.error('Failed to fetch todos:', error);
-        setError('Failed to load TODOs. Please try again later.');
+        setError('Connection Error: Could not reach the server. Please ensure the backend is running.');
       } finally {
         setLoading(false);
       }
@@ -27,7 +28,12 @@ function App() {
 
   const handleAddTodo = async (e) => {
     e.preventDefault();
-    if (!newTodoTitle.trim()) return;
+    if (!newTodoTitle.trim()) {
+      setIsInvalid(true);
+      return;
+    }
+    
+    setIsInvalid(false);
     try {
       setError(null);
       const savedTodo = await createTodo({ 
@@ -39,7 +45,7 @@ function App() {
       setNewTodoDescription('');
     } catch (error) {
       console.error('Failed to create todo:', error);
-      setError('Failed to create TODO.');
+      setError('Failed to create TODO. Please try again.');
     }
   };
 
@@ -95,11 +101,15 @@ function App() {
               <input 
                 type="text" 
                 placeholder="Title" 
-                className="todo-input"
+                className={`todo-input ${isInvalid ? 'invalid' : ''}`}
                 value={newTodoTitle}
-                onChange={(e) => setNewTodoTitle(e.target.value)}
+                onChange={(e) => {
+                  setNewTodoTitle(e.target.value);
+                  if (e.target.value.trim()) setIsInvalid(false);
+                }}
                 required
               />
+              {isInvalid && <span className="input-error-text">Title is required</span>}
               <input 
                 type="text" 
                 placeholder="Description (optional)" 
@@ -115,12 +125,19 @@ function App() {
           {loading ? (
             <p className="loading-message">Loading TODOs...</p>
           ) : (
-            <TodoList 
-              todos={todos} 
-              onDelete={handleDeleteTodo} 
-              onUpdate={handleUpdateTodo}
-              onToggle={handleToggleTodo}
-            />
+            <>
+              <TodoList 
+                todos={todos} 
+                onDelete={handleDeleteTodo} 
+                onUpdate={handleUpdateTodo}
+                onToggle={handleToggleTodo}
+              />
+              {todos.length > 0 && (
+                <div className="todo-stats">
+                  {todos.filter(t => !t.done).length} tasks remaining
+                </div>
+              )}
+            </>
           )}
         </section>
       </main>
