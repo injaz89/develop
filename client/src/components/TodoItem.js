@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 const TodoItem = ({ todo, onDelete, onUpdate, onToggle }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(todo.title);
+  const [editDescription, setEditDescription] = useState(todo.description || '');
 
   const handleUpdate = () => {
-    if (editTitle.trim() && editTitle !== todo.title) {
-      onUpdate(todo._id, editTitle);
+    if (editTitle.trim()) {
+      onUpdate(todo._id, { title: editTitle, description: editDescription });
     }
     setIsEditing(false);
   };
@@ -16,6 +17,7 @@ const TodoItem = ({ todo, onDelete, onUpdate, onToggle }) => {
       handleUpdate();
     } else if (e.key === 'Escape') {
       setEditTitle(todo.title);
+      setEditDescription(todo.description || '');
       setIsEditing(false);
     }
   };
@@ -30,12 +32,22 @@ const TodoItem = ({ todo, onDelete, onUpdate, onToggle }) => {
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
             onKeyDown={handleKeyDown}
+            placeholder="Title"
             autoFocus
+          />
+          <input
+            type="text"
+            className="todo-edit-input"
+            value={editDescription}
+            onChange={(e) => setEditDescription(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Description"
           />
           <div className="todo-edit-actions">
             <button className="todo-save-btn" onClick={handleUpdate}>Save</button>
             <button className="todo-cancel-btn" onClick={() => {
               setEditTitle(todo.title);
+              setEditDescription(todo.description || '');
               setIsEditing(false);
             }}>Cancel</button>
           </div>

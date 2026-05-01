@@ -7,6 +7,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newTodoTitle, setNewTodoTitle] = useState('');
+  const [newTodoDescription, setNewTodoDescription] = useState('');
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -29,9 +30,13 @@ function App() {
     if (!newTodoTitle.trim()) return;
     try {
       setError(null);
-      const savedTodo = await createTodo({ title: newTodoTitle });
+      const savedTodo = await createTodo({ 
+        title: newTodoTitle, 
+        description: newTodoDescription 
+      });
       setTodos([savedTodo, ...todos]);
       setNewTodoTitle('');
+      setNewTodoDescription('');
     } catch (error) {
       console.error('Failed to create todo:', error);
       setError('Failed to create TODO.');
@@ -39,35 +44,41 @@ function App() {
   };
 
   const handleDeleteTodo = async (id) => {
+    const previousTodos = [...todos];
+    setTodos(todos.filter(todo => todo._id !== id));
     try {
       setError(null);
       await deleteTodo(id);
-      setTodos(todos.filter(todo => todo._id !== id));
     } catch (error) {
       console.error('Failed to delete todo:', error);
       setError('Failed to delete TODO.');
+      setTodos(previousTodos);
     }
   };
 
-  const handleUpdateTodo = async (id, title) => {
+  const handleUpdateTodo = async (id, updateData) => {
+    const previousTodos = [...todos];
+    setTodos(todos.map(todo => todo._id === id ? { ...todo, ...updateData } : todo));
     try {
       setError(null);
-      const updatedTodo = await updateTodo(id, { title });
-      setTodos(todos.map(todo => todo._id === id ? updatedTodo : todo));
+      await updateTodo(id, updateData);
     } catch (error) {
       console.error('Failed to update todo:', error);
       setError('Failed to update TODO.');
+      setTodos(previousTodos);
     }
   };
 
   const handleToggleTodo = async (id) => {
+    const previousTodos = [...todos];
+    setTodos(todos.map(todo => todo._id === id ? { ...todo, done: !todo.done } : todo));
     try {
       setError(null);
-      const updatedTodo = await toggleTodo(id);
-      setTodos(todos.map(todo => todo._id === id ? updatedTodo : todo));
+      await toggleTodo(id);
     } catch (error) {
       console.error('Failed to toggle todo:', error);
       setError('Failed to toggle TODO.');
+      setTodos(previousTodos);
     }
   };
 
@@ -80,13 +91,23 @@ function App() {
         {error && <div className="error-message">{error}</div>}
         <section className="todo-form-section">
           <form className="todo-form" onSubmit={handleAddTodo}>
-            <input 
-              type="text" 
-              placeholder="What needs to be done?" 
-              className="todo-input"
-              value={newTodoTitle}
-              onChange={(e) => setNewTodoTitle(e.target.value)}
-            />
+            <div className="todo-input-group">
+              <input 
+                type="text" 
+                placeholder="Title" 
+                className="todo-input"
+                value={newTodoTitle}
+                onChange={(e) => setNewTodoTitle(e.target.value)}
+                required
+              />
+              <input 
+                type="text" 
+                placeholder="Description (optional)" 
+                className="todo-input todo-desc-input"
+                value={newTodoDescription}
+                onChange={(e) => setNewTodoDescription(e.target.value)}
+              />
+            </div>
             <button type="submit" className="todo-add-btn">Add</button>
           </form>
         </section>
