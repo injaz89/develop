@@ -4,7 +4,9 @@ require('dotenv').config();
 console.log('Attempting to connect to MongoDB...');
 console.log('URI:', process.env.MONGO_URI ? 'FOUND (hidden for security)' : 'NOT FOUND');
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+  serverSelectionTimeoutMS: 5000
+})
   .then(() => {
     console.log('✅ SUCCESS: Connected to MongoDB successfully!');
     process.exit(0);

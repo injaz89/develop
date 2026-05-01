@@ -12,9 +12,16 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+  serverSelectionTimeoutMS: 5000 // Timeout after 5 seconds instead of hanging
+})
   .then(() => console.log('✅ Successfully connected to MongoDB'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err));
+  .catch((err) => {
+    console.error('❌ MongoDB connection error:', err.message);
+    if (err.message.includes('Could not connect to any servers')) {
+      console.error('👉 TIP: Check if your IP address is whitelisted in MongoDB Atlas (Network Access).');
+    }
+  });
 
 // Basic route to test the server
 app.get('/', (req, res) => {
